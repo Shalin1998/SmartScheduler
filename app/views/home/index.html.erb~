@@ -1,0 +1,6 @@
+<table>
+<% @tournaments.each do |t| %>
+<tr><td><% link_to t.name, tournament_path(t.id) %></td></tr>
+<% end %>
+
+</table>

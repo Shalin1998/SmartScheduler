@@ -1,0 +1,35 @@
+
+<%= form_for [:tournament, @game] do |f| %>
+<div class="row" style="margin-left:auto;margin-right:auto;width:300px;">
+<div style="float:left;width:150px;">
+		<% @team.each do |f| %>
+		<input type="radio" name="game[team_one]" value="<%= f.id %>" />
+<%= label_tag(f.name) %>
+<br>
+		<% end %>
+</div>
+
+<div style="float:left;width:150px;">
+<% @team.each do |f| %>
+<input type="radio" name="game[team_two]" value="<%= f.id %>" />
+<%= label_tag(f.name) %>
+<br>
+<% end %>
+</p>
+</div>
+</div>
+<center>
+<input type='datetime-local' name="game[date_time]" />
+<p>
+	Select the field:
+	<select name="game[field_id]">
+		<option value="">Please select...</option>
+		<% field = current_user.fields.all %>
+		<% field.each do |x| %>
+		<option value="<%= x.id %>"><%= x.name %></option>
+		<% end %>
+	</select>
+</p>
+<%= f.submit 'Create', data: {disable_with: "Please wait..."}, class: "btn btn-default" %>
+</center>
+<% end %>

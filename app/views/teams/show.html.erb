@@ -1,0 +1,42 @@
+<style>
+a{
+	transition:0.5s;
+}
+.names{
+	padding:15px 30px;
+}
+.emails{
+	padding:15px 30px;
+}
+.actions{
+	padding:15px 30px;
+}
+</style>
+<h1 style="text-align:center">
+	<strong><%= @team.name %></strong>
+</h1>
+<center>
+	<%= link_to 'Add Players', new_team_player_path(params[:id]) %>
+	<table>
+		<tr style="border-bottom:1px solid black;">
+		<th style="padding:15px 30px;">
+			Player
+		</th>
+		<th style="padding:15px 30px;">
+			Email
+		</th>
+		<th style="padding:15px 30px;">
+			Actions
+		</th>
+		<tr>
+	<% @team.players.each do |f| %>
+	<tr>
+	<td class="names"><%= f.name %></td>
+	<td class="emails"><%= f.email %></td>
+	<td class="actions">
+		<%= link_to "", team_player_path(f.team_id, f.id), method: :edit, class: "glyphicon glyphicon-pencil hvr-pulse-grow" %>
+		<%= link_to "", team_player_path(f.team_id, f.id), method: :delete, class: "glyphicon glyphicon-trash hvr-pulse-grow", data: {confirm: "Are you sure?"} %></td>
+</tr>
+	<% end %>
+</table>
+</center>

@@ -1,0 +1,12 @@
+<center>
+<h1>Add Team</h1>
+<%= form_for @team, remote: true do |f| %>
+	<p>
+		<%= f.label :name %><br />
+		<%= f.text_field :name %>
+	</p>
+	<p>
+		<%= f.submit 'Create Team', data: {disable_with: "Please wait..."} %>
+	</p>
+<% end %>
+</center>

@@ -1,0 +1,12 @@
+<center>
+<h1>New Tournament</h1>
+<%= form_for @tournament do |f| %>
+	<p>
+		<%= f.label :name %><br />
+		<%= f.text_field :name %>
+	</p>
+	<p>
+		<%= f.submit 'Create', data: {disable_with: "Please wait..."} %>
+	</p>
+<% end %>
+</center>

@@ -1,0 +1,206 @@
+
+    <style>
+    a{
+    	transition:0.5s;
+    }
+    .checkb {
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    margin:0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+    *overflow: hidden;
+}
+    @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-weight: 300;
+    }
+    body {
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      font-weight: 300;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+      border: 1px solid #99FF99;
+    transition : 0.5s;
+    -webkit-box-shadow:none;
+    }
+    body ::-webkit-input-placeholder {
+      /* WebKit browsers */
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      font-weight: 300;
+    }
+    body :-moz-placeholder {
+      /* Mozilla Firefox 4 to 18 */
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      opacity: 1;
+      font-weight: 300;
+    }
+    body ::-moz-placeholder {
+      /* Mozilla Firefox 19+ */
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      opacity: 1;
+      font-weight: 300;
+    }
+    body :-ms-input-placeholder {
+      /* Internet Explorer 10+ */
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      font-weight: 300;
+    }
+    .wrapper {
+      background: #50a3a2;
+      background: -webkit-linear-gradient(top left, #2fb059 0%, #99FF99 100%);
+      background: linear-gradient(to bottom right, #2fb059 0%, #99FF99 100%);
+      position: absolute;
+      top: 200px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin-top: -200px;
+      overflow: hidden;
+    }
+    .wrapper.form-success .container h1 {
+      -webkit-transform: translateY(85px);
+          -ms-transform: translateY(85px);
+              transform: translateY(85px);
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 80px 0;
+      height: 100%;
+      text-align: center;
+    }
+    .container h1 {
+      font-size: 40px;
+      -webkit-transition-duration: 1s;
+              transition-duration: 1s;
+      -webkit-transition-timing-function: ease-in-put;
+              transition-timing-function: ease-in-put;
+      font-weight: 200;
+    }
+    form {
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+    form input {
+      appearance: none;
+      outline: 0;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      background-color: rgba(255, 255, 255, 0.25);
+      width: 250px;
+      border-radius: 3px;
+      padding: 10px 15px;
+      margin: 0 auto 10px auto;
+      display: block;
+      text-align: center;
+      font-size: 18px;
+      color: white;
+      -webkit-transition-duration: 0.25s;
+              transition-duration: 0.25s;
+      font-weight: 300;
+    }
+    form input:hover {
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+    form input:focus {
+      background-color: white;
+      width: 300px;
+      color: #53e3a6;
+    }
+    form button {
+      appearance: none;
+      outline: 0;
+      background-color: white;
+      border: 0;
+      padding: 10px 15px;
+      color: #53e3a6;
+      border-radius: 3px;
+      width: 250px;
+      cursor: pointer;
+      font-size: 18px;
+      -webkit-transition-duration: 0.25s;
+              transition-duration: 0.25s;
+    }
+    form button:hover {
+      background-color: #f5f7f9;
+    }
+    label{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+    width:150px;
+}
+#error_explanation h2{
+  color:red;
+  font-size:20px;
+}
+#error_explanation ul li{
+  color: red;
+  list-style-type: none;
+}
+#login-button{
+background-color: rgba(255,255,255,1);
+color: rgba(130,200,130,1);
+}
+#login-button:hover{
+background-color: rgba(180,240,180,0.5);
+color: white;
+}
+    </style>
+  <body>
+    <div class="wrapper">
+	<div class="container">
+		<h1 style="color:white;" class="animated fadeInDown">Sign Up</h1>
+<center>
+<%= form_for(resource, as: resource_name,class: "form" , url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+	<div class="field animated fadeInDown">
+		<%= f.text_field :firstname, placeholder: "First Name", style: "padding: 10px 15px;" %>
+	</div>
+
+	<div class="field animated fadeInDown">
+		<%= f.text_field :lastname, placeholder: "Last Name", style: "padding: 10px 15px;" %>
+	</div>
+
+	<div class="field animated fadeInDown">
+    <%= f.email_field :email, placeholder: "Email", style: "padding: 10px 15px;" %>
+  </div>
+
+  <div class="field animated fadeInDown">
+    <% if @validatable %>
+    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %>
+    <%= f.password_field :password, autocomplete: "off", placeholder: "Password", style: "padding: 10px 15px;" %>
+  </div>
+
+  <div class="field animated fadeInDown">
+    <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Password Confirmation", style: "padding: 10px 15px;" %>
+  </div>
+<br><br>
+  <div class="actions animated fadeInDown">
+    <%= f.submit "Sign up", id: "login-button" %>
+  </div>
+<% end %>
+				</div>
+      </div>
+    </center>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+        <script src="js/index.js"></script>
+
+
+
+
+  </body>

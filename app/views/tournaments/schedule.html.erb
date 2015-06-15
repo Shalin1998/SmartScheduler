@@ -1,0 +1,21 @@
+<style>
+a{
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
+}
+a:hover{
+  color: #e4e4e4;
+  text-decoration: none;
+}
+</style>
+<center>
+<div class="panel panel-danger" style="width:800px;">
+  <div class="panel-heading">
+    <h3 class="panel-title"><a href="javascript:history.back()"><span class="glyphicon glyphicon-arrow-left"></span></a>&nbsp;Error!</h3>
+  </div>
+  <div class="panel-body">
+    <%= @errors_message %>
+  </div>
+</div>
+</center>

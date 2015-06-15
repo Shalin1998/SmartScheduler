@@ -1,0 +1,140 @@
+<script>
+$(document).ready(function(){
+  $('#new_game').on('ajax:success',function(e, data, status, xhr){
+    location.reload();
+  }).on('ajax:error',function(e, xhr, status, error){
+    console.log("Error");
+  });
+
+});
+</script>
+<style>
+a{
+  transition:0.5s;
+}
+.hvr-sweep-to-right:hover{
+  color: white;
+}
+hr{
+  max-width: 100%;
+  height: 12px;
+  border: 0;
+  box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+}
+.team_display:hover{
+  background-color: rgba(230,230,230,0.9);
+}
+body{
+  font-size: 15px;
+  background-image: url(<%= asset_path 'backthree.jpg' %>);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+</style>
+	<div class="modal fade" id="roundrobin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&nbsp;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Generate Games</h4>
+				</div>
+				<div class="modal-body">
+          <%= form_tag '/tournaments/schedule',id: 'schedule-form', :method => "post" do |f| %>
+            <b>Select your fields:</b>
+            <br>
+            <% current_user.fields.each do |x| %>
+            <%= check_box_tag 'fields_selected[]', x.id %>
+            <%= label_tag x.name %>
+            <br>
+            <% end %>
+            <hr style="height:1px;box-shadow:none;color:#000;">
+            <b>Select your teams:</b>
+            <br>
+            <% current_user.teams.each do |x| %>
+              <%= check_box_tag 'teams_selected[]', x.id %>
+              <%= label_tag x.name %>
+              <br>
+            <% end %>
+            <input type="hidden" name="tournamentid" id="tournamentid" value="<%= @tournament.id %>">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" onclick="getElementById('schedule-form').submit()" class="btn btn-default">Generate</button>
+          <% end %>
+					</div>
+			</div>
+		</div>
+</div>
+
+<div class="modal fade" id="send_schedule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&nbsp;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Send Schedule</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag '/tournaments/send_schedule',id: 'send-schedule-form', :method => "post" do |f| %>
+          <b>Select your teams:</b>
+          <br>
+          <% current_user.teams.each do |x| %>
+            <%= check_box_tag 'teams_selected_mail[]', x.id %>
+            <%= label_tag x.name %>
+            <br>
+          <% end %>
+          <input type="hidden" name="tournamentid" id="tournamentid" value="<%= @tournament.id %>">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" onclick="getElementById('send-schedule-form').submit()" class="btn btn-default">Send</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h1 style="text-align:center;color:#002400;" class="animate fadeInDown">
+	<strong><%= @tournament.name %></strong>
+</h1>
+<center>
+<button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#roundrobin">Generate Games</button>
+<button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#send_schedule">Mail Schedule</button>
+<br>
+
+<%-# <%= link_to "Add Game", new_tournament_game_path(params[:id]) -%>
+</center>
+<center>
+    <% @tournament.games.order(date_time: :asc).each do |f| %>
+<div style="text-align:center;margin-top:30px;width:800px;" class="animated fadeInDown">
+    <% sameday = false %>
+    <% for i in 0..@same_day.count-1 %>
+      <% if f.id == @same_day[i] %>
+       <% sameday = true %>
+       <% end %>
+    <% end %>
+    <% if sameday == false %>
+    <div class="team_display panel panel-default">
+    <div class="panel-body" style="width:800px;">
+    <p style="float:left;"><%= f.date_time.strftime("%a. %B %d, %Y") %></p>
+    <%= Team.find(f.team_one).name %>
+    vs.
+    <%= Team.find(f.team_two).name %>
+    <br>
+    <%= f.date_time.strftime("%I:%M%p") %> @
+    <%= Field.find(f.field).name %>
+    <% if DateTime.now > f.date_time %>
+    <% end %>
+  </div>
+</div>
+    <% else %>
+      <% if(Game.find(f.id).date_time.yday != f.date_time.yday) %>
+        <div class="team_display panel panel-default">
+        <div class="panel-body" style="width:800px;">
+      <% end %>
+
+
+    <% end %>
+  <% end %>
+    </div>
+</center>

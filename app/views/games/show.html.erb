@@ -1,0 +1,26 @@
+<center>
+<h1>
+<%= Team.find(@game.team_one).name %>
+&nbsp;
+vs.
+&nbsp;
+<%= Team.find(@game.team_two).name %>
+</h1>
+<p>
+  Date:&nbsp;
+  <%= @game.match_date.strftime("%A, %B %d, %Y") %>
+</p>
+<p>
+  Time ->
+  <%= @game.match_hour %>:<%= @game.match_minute %>
+  <% if @game.match_pm %>
+    PM
+  <% else %>
+    AM
+  <% end %>
+</p>
+<p>
+  Location:&nbsp;
+  <%= @game.location %>
+</p>
+</center>

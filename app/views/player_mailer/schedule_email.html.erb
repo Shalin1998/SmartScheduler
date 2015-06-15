@@ -1,0 +1,14 @@
+<p>
+Hi! <%= @player.name %>, this is an upcoming tournament schedule.
+If there are any changes, we will let you know!
+</p>
+<h1><%= Tournament.find(@tournament).name %></h1>
+<br>
+<% Tournament.find(@tournament).games.each do |f| %>
+<%= Team.find(f.team_one).name %> vs. <%= Team.find(f.team_two).name %>
+<br>
+<%= f.date_time.strftime("%a. %B %d, %Y @ %I:%M%p") %>
+<br>
+Location: <%= Field.find(f.field_id).name %>
+<hr>
+<% end %>

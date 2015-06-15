@@ -1,0 +1,18 @@
+<center>
+<%= form_for [:team, @player] do |f| %>
+<%= errors_for @player %>
+<p>
+<%= f.label :name %>
+<br>
+<%= f.text_field :name, style: "text-align:center;padding: 10px 15px;" %>
+</p>
+<p>
+  <%= f.label :email %>
+  <br>
+  <%= f.email_field :email, style: "text-align:center;padding: 10px 15px;" %>
+</p>
+<p>
+  <%= f.submit 'Add', data: {disable_with: "Please wait..."}, class: "btn btn-success" %>
+</p>
+<% end %>
+</center>

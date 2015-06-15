@@ -1,0 +1,13 @@
+<style>
+body{
+  font-size: 15px;
+}
+</style>
+<center>
+<%= form_for [:field, @timeslot] do |f| %>
+<%= errors_for @timeslot %>
+<%= f.label "Start Time" %>
+<input type="datetime-local" name="timeslot[start]" />
+<%= f.submit %>
+<% end %>
+</center>

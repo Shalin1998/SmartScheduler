@@ -1,0 +1,398 @@
+<script>
+$(document).ready(function(){
+  $('#new_tournament').on('ajax:success',function(e, data, status, xhr){
+    location.reload();
+  }).on('ajax:error',function(e, xhr, status, error){
+    console.log("Error");
+  });
+  $('#new_team').on('ajax:success',function(e, data, status, xhr){
+    location.reload();
+  }).on('ajax:error',function(e, xhr, status, error){
+    console.log("Error");
+  });
+  $('#new_field').on('ajax:success',function(e, data, status, xhr){
+    location.reload();
+  }).on('ajax:error',function(e, xhr, status, error){
+    console.log("Error");
+  });
+
+});
+</script>
+
+<style>
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(0,184,0,0.6);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,0,0,0.4);
+}
+a{
+  color: #00B800;
+  text-decoration: none;
+  transition:.5s;
+}
+a:hover{
+  color: #005F00;
+  text-decoration: none;
+}
+body{
+    background-image: url(<%= asset_path 'backthree.jpg' %>);
+    background-size: cover;
+  overflow-x:hidden;
+  font-size: 15px;
+}
+.tournament-box{
+  background-color:rgba(255,255,255,0.9);
+  height:444px;
+  border-style: solid;
+  border-color: #e7e7e7;
+  border-width: 0.5px;
+  border-radius: 10px;
+  margin:15px;
+}
+.tournament-head{
+  border-bottom: 2px solid #005F00;
+  border-radius:2px;
+  padding: 20px;
+  height:65px;
+}
+.tournament-column{
+  padding: 10px;
+  padding-top:20px;
+  padding-left:20px;
+}
+.tournament-row{
+  border-bottom: 2px solid #e7e7e7;
+  padding: 15px;
+  padding-left:25px;
+  transition:0.5s;
+}
+.tournament-row:hover{
+  border-bottom: 2px solid #e7e7e7;
+  padding: 15px;
+  background-color:#f8f8f8;
+}
+.tournament-table{
+  border: 2px solid #e7e7e7;
+  width:100%;
+}
+.tournament-head-title{
+  font-weight:bold;
+  font-family: 'Khand',sans-serif;
+  color:#004800;
+  font-size: 18px;
+}
+.team-box{
+  background-color:rgba(255,255,255,0.9);
+  height:444px;
+  margin: 15px;
+  border-style: solid;
+  border-color: #e7e7e7;
+  border-width: 0.5px;
+  border-radius: 10px;
+}
+.team-head{
+  border-bottom: 2px solid #005F00;
+  border-radius: 2px;
+  padding: 20px;
+  height:65px;
+}
+.team-column{
+  padding: 10px;
+  padding-top:20px;
+  padding-left:20px;
+}
+.team-row{
+  border-bottom: 1px solid #e7e7e7;
+  padding: 15px;
+  transition:0.5s;
+  padding-left:25px;
+}
+.team-row:hover{
+  padding: 15px;
+  background-color:#f8f8f8;
+}
+.team-table{
+  width:100%;
+  overflow:hidden;
+}
+.team-head-title{
+  font-size: 18px;
+  font-weight:bold;
+  color:#004800;
+  font-family: 'Khand',sans-serif;
+}
+.table-box{
+  overflow-y:scroll;
+  height:370px;
+  margin-left:-8px;
+  margin-right:-8px;
+}
+.field-box{
+  background-color:rgba(255,255,255,0.9);
+  height:444px;
+  border-style: solid;
+  border-color: #e7e7e7;
+  border-width: 0.5px;
+  border-radius: 10px;
+  margin:15px;
+}
+.field-head{
+  border-bottom: 2px solid #005F00;
+  padding: 20px;
+  border-radius: 2px;
+  height:65px;
+}
+.field-column{
+  padding: 10px;
+  padding-top:20px;
+  padding-left:20px;
+}
+.field-row{
+  border-bottom: 1px solid #e7e7e7;
+  padding: 15px;
+  padding-left:25px;
+  transition:0.5s;
+}
+.field-row:hover{
+  padding: 15px;
+  background-color:#f8f8f8;
+}
+.field-table{
+  width:100%;
+  overflow:hidden;
+}
+.field-head-title{
+  font-weight:bold;
+  font-size: 18px;
+  font-family: 'Khand',sans-serif;
+  color:#004800;
+}
+input[type="text"]:focus {
+  border: 1px solid #99FF99;
+-webkit-box-shadow:none;
+}
+</style>
+<body>
+
+  <div class="addNew" style="width:100%;height:700px;">
+    <div class="modal fade" id="team" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&nbsp;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create Team</h4>
+          </div>
+          <div class="modal-body">
+            <% new_team = Team.new %>
+            <%= form_for new_team, remote: true do |f| %>
+
+            <p style="text-align:center;">
+              <%= f.label :name %><br />
+              <%= f.text_field :name,style: "padding: 10px 15px;text-align:center;" %>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%= f.submit 'Create', data: {disable_with: "Please wait..."}, class: "btn btn-default" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="tournament" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&nbsp;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create Tournament</h4>
+          </div>
+          <div class="modal-body">
+            <% new_tournament = Tournament.new %>
+            <%= form_for new_tournament, remote: true do |f| %>
+            <%= errors_for new_tournament %>
+            <p style="text-align:center;">
+              <%= f.label :name %><br />
+              <%= f.text_field :name,style: "padding: 10px 15px;text-align:center;" %>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%= f.submit 'Create', data: {disable_with: "Please wait..."}, class: "btn btn-default" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="field" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&nbsp;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Add Venue</h4>
+          </div>
+          <div class="modal-body">
+            <% new_field = Field.new %>
+            <%= form_for new_field, remote: true do |f| %>
+            <p style="text-align:center;">
+              <%= f.label :name %><br />
+              <%= f.text_field :name,style: "padding: 10px 15px;text-align:center;" %>
+            </p>
+            <p style="text-align:center;">
+              <%= f.label :location %><br />
+              <%= f.text_field :location,style: "padding: 10px 15px;text-align:center;" %>
+            </p>
+          </div>
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%= f.submit 'Create', data: {disable_with: "Please wait..."}, class: "btn btn-default" %>
+
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Import</h4>
+          </div>
+          <div class="modal-body">
+            <%= form_tag(:import ,method: :POST, id: "importf", multipart: true) do %>
+              <%= file_field_tag(:import_file) %>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-default" onclick="importButton()">Submit</button>
+            <script>
+            function importButton(){
+              $("#importf").submit();
+              console.log("Imported");
+            }
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="container-fluid">
+
+    <div class="row" style="margin-top:20px;">
+
+      <div class="col-lg-1 col-md-1"></div>
+
+      <div class="tournament-box col col-lg-3 col-md-3">
+        <div class="tournament-head">
+          <div class="tournament-head-title" style="float:left;">Tournaments</div>
+          <div style="float:right">
+            <a href="#" data-toggle="tooltip" data-placement="right" title="Add Tournament">
+              <span type="button" class="glyphicon glyphicon-plus hvr-pulse-grow" data-toggle="modal" data-target="#tournament">
+              </a>
+            </div>
+          </span>
+        </div>
+        <div class="table-box">
+          <table class="tournament-table" style="overflow:hidden;border-radius:10px;">
+            <% @tournament.each do |t| %>
+            <tr class="tournament-row"><td class="tournament-column animated fadeInDown">
+              <%= link_to t.name, tournament_path(t.id),class: "hvr-grow" %>
+              <p style="float:right;margin-right:6px;">
+              <%= link_to "", tournament_path(t.id), method: :delete, class: "glyphicon glyphicon-trash hvr-pulse-grow", data: {confirm: "Are you sure?"} %>
+            </p>
+              </td></tr>
+              <% end %>
+            </table>
+          </div>
+        </div>
+
+
+        <div class="team-box col col-lg-3 col-md-3">
+          <div class="team-head">
+            <div class="team-head-title" style="float:left;">Teams</div>
+            <div style="float:right">
+              <a href="#" data-toggle="tooltip" data-placement="right" title="Add Team">
+                <span  type="button" class="glyphicon glyphicon-plus hvr-pulse-grow" data-toggle="modal" data-target="#team">
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="table-box">
+            <table class="team-table" style="overflow:hidden;border-radius:10px;">
+              <% @team.each do |t| %>
+              <tr class="team-row"><td class="team-column animated fadeInDown">
+                <%= link_to t.name, team_path(t.id),class: "hvr-grow" %>
+                <p style="float:right;margin-right:6px;">
+                <%= link_to "", team_path(t.id), method: :delete, class: "glyphicon glyphicon-trash hvr-pulse-grow ",data: {confirm: "Are you sure?"} %>
+              </p>
+                </td></tr>
+                <% end %>
+              </table>
+            </div>
+          </div>
+
+
+          <div class="field-box col col-lg-3 col-md-3">
+            <div class="field-head">
+              <div class="field-head-title" style="float:left;">Venues</div>
+              <div style="float:right">
+                <a href="#" data-toggle="tooltip" data-placement="right" title="Add Field">
+                  <span type="button" class="glyphicon glyphicon-plus hvr-pulse-grow" data-toggle="modal" data-target="#field">
+                  </a>
+                </span>
+              </div>
+            </div>
+            <div class="table-box">
+              <table class="field-table" style="overflow:hidden;border-radius:10px;">
+                <% if @field.exists? %>
+                <% @field.each do |f| %>
+                <tr class="field-row"><td
+                  class="field-column animated fadeInDown">
+                  <%= link_to f.name, field_path(f.id),class: "hvr-grow" %>
+                  <p style="float:right;margin-right:6px;">
+                  <%= link_to "", field_path(f.id), method: :delete,class: "glyphicon glyphicon-trash hvr-pulse-grow",data: {confirm: "Are you sure?"} %>
+                </p>
+                </td>
+              </tr>
+              <% end %>
+              <% end %>
+            </table>
+          </div>
+        </div>
+
+      </div>
+          </div>
+
+          <center>
+<button style="margin-top:50px;opacity:0.9;padding: 10px 15px;" class="btn btn-default hvr-float-shadow animated fadeInDown" data-toggle="modal" data-target="#import">Import...</button>
+  </center>
+      <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+    </script>
+
+  </div>
+  </body>

@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  team_one: 1
+  team_two: 1
+  match_date: 2015-04-22
+  match_time: 2015-04-22 14:08:52
+  location: MyString
+  team_one_score: 1
+  team_two_score: 1
+
+two:
+  name: MyString
+  team_one: 1
+  team_two: 1
+  match_date: 2015-04-22
+  match_time: 2015-04-22 14:08:52
+  location: MyString
+  team_one_score: 1
+  team_two_score: 1

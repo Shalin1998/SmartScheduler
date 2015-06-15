@@ -1,0 +1,32 @@
+<style>
+a{
+	transition:0.5s;
+}
+body{
+  font-size: 15px;
+}
+</style>
+<center>
+<h1>
+<%= @field.name %>
+</h1>
+<h2>
+<%= @field.location %>
+</h2>
+<%= link_to 'New Timeslot',new_field_timeslot_path(params[:id]) %>
+<hr>
+<% timeslot_info = @field.timeslots.sort_by{:start} %>
+  <% timeslot_info.each do |f| %>
+  <% if DateTime.now > f.start %>
+  <% f.destroy %>
+  <% end %>
+<div>
+  <%= f.start.strftime("%a. %B %d, %Y @ %I:%M%p") %> ->
+  <%= f.start.advance(:hours => 2).strftime("%I:%M%p") %>
+  <% if f.available? %>
+  - Available
+  <% end %>
+  <hr>
+</div>
+  <% end %>
+</center>
