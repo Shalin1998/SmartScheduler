@@ -24,7 +24,9 @@ body{
   <%= f.start.strftime("%a. %B %d, %Y @ %I:%M%p") %> ->
   <%= f.start.advance(:hours => 2).strftime("%I:%M%p") %>
   <% if f.available? %>
-  - Available
+  &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Available
+	<% else %>
+	&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Booked
   <% end %>
   <hr>
 </div>

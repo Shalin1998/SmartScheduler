@@ -26,6 +26,33 @@ class TournamentsController < ApplicationController
 				end
 			end
 		end
+
+		@remove_team = Array.new
+		teams = Array.new
+		@tournament.games.each do |f|
+			teams.push(f.team_one).push(f.team_two)
+		end
+		teams = teams.uniq
+		for i in 0..teams.count-1
+			@remove_team.push(teams[i])
+		end
+	end
+
+	def remove_team
+		tournament_num = params[:tournamentid]
+		teams_remove = params[:teams_selected_remove]
+		x = Array.new
+		for i in 0..teams_remove.count-1
+			f = Game.where("team_one = #{teams_remove[i]} OR team_two = #{teams_remove[i]}")
+			for m in 0..f.count-1
+				x.push(f[m].timeslot)
+			end
+			f.destroy_all
+		end
+		for i in 0..x.count-1
+			Timeslot.find(x[i]).update_attribute(:available, true)
+		end
+		redirect_to tournament_path(tournament_num)
 	end
 
 	def new
@@ -41,7 +68,11 @@ class TournamentsController < ApplicationController
 		@game_count = 0
 		@team_count = team_arr.count
 		for i in 0..(field_arr.count-1)
-			@timeslot_count += Field.find(field_arr[i]).timeslots.count
+			Field.find(field_arr[i]).timeslots.each do |f|
+				if f.available?
+					@timeslot_count += 1
+				end
+			end
 		end
 		for i in 1..(team_arr.count-1)
 			@game_count += i
@@ -73,9 +104,11 @@ class TournamentsController < ApplicationController
 			f = 0
 			for i in 0..(@field_count-1)
 				Field.find(field_arr[i]).timeslots.each do |x|
-					@timeslots_arr[f] = x.id
-					@field_timeslots_arr[f] = field_arr[i]
-					f += 1
+					if x.available?
+						@timeslots_arr[f] = x.id
+						@field_timeslots_arr[f] = field_arr[i]
+						f += 1
+					end
 				end
 			end
 			@create_game = Array.new(@game_count){Array.new(4)}
@@ -134,8 +167,11 @@ class TournamentsController < ApplicationController
 					Game.create(:user => current_user,
 					:tournament => Tournament.find(tournament_num),
 					:team_one => @create_game[i][0] , :team_two => @create_game[i][1],
-					:date_time => Timeslot.find(@create_game[i][2]).start, :field_id => @create_game[i][3])
+					:date_time => Timeslot.find(@create_game[i][2]).start, :field_id => @create_game[i][3],
+					:timeslot => @create_game[i][2])
+					Timeslot.find(@create_game[i][2]).update_attribute(:available, false)
 				end
+				Tournament.find(tournament_num).update_attribute(:generated, true)
 				redirect_to tournament_path(tournament_num)
 			else
 				# add error here
@@ -158,6 +194,11 @@ class TournamentsController < ApplicationController
 
 	def destroy
 		@tournament = Tournament.find(params[:id])
+
+		@tournament.games.each do |f|
+			Timeslot.find(f.timeslot).update_attribute(:available, true)
+		end
+
 		@tournament.destroy
 		redirect_to root_path
 	end
