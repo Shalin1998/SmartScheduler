@@ -5,6 +5,9 @@ a{
 body{
   font-size: 15px;
 }
+hr{
+	max-width: 100%;
+}
 </style>
 <center>
 <h1>
@@ -14,6 +17,14 @@ body{
 <%= @field.location %>
 </h2>
 <%= link_to 'New Timeslot',new_field_timeslot_path(params[:id]) %>
+<br>
+<% available_slots = 0 %>
+<% @field.timeslots.each do |f| %>
+	<% if f.available? %>
+		<% available_slots += 1 %>
+	<% end %>
+<% end %>
+<%= available_slots %> Available Timeslots
 <hr>
 <% timeslot_info = @field.timeslots.sort_by{:start} %>
   <% timeslot_info.each do |f| %>
