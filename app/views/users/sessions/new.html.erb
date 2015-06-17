@@ -1,144 +1,158 @@
 
     <style>
     a{
-      transition: 0.5s;
+      transition:0.5s;
     }
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-weight: 300;
-}
-body {
-  font-family: 'Source Sans Pro', sans-serif;
-  color: white;
-  font-weight: 300;
-}
-body ::-webkit-input-placeholder {
-  /* WebKit browsers */
-  font-family: 'Source Sans Pro', sans-serif;
-  color: white;
-  font-weight: 300;
-}
-body :-moz-placeholder {
-  /* Mozilla Firefox 4 to 18 */
-  font-family: 'Source Sans Pro', sans-serif;
-  color: white;
-  opacity: 1;
-  font-weight: 300;
-}
-body ::-moz-placeholder {
-  /* Mozilla Firefox 19+ */
-  font-family: 'Source Sans Pro', sans-serif;
-  color: white;
-  opacity: 1;
-  font-weight: 300;
-}
-body :-ms-input-placeholder {
-  /* Internet Explorer 10+ */
-  font-family: 'Source Sans Pro', sans-serif;
-  color: white;
-  font-weight: 300;
-}
-.wrapper {
-  background: #fff;
-  position: absolute;
-  top: 200px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  margin-top: -200px;
-  overflow: hidden;
-}
-input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
-  border: 1px solid #7fec7f;
-transition : 0.1s;
--webkit-box-shadow:none;
-}
-.wrapper.form-success .container h1 {
-  -webkit-transform: translateY(85px);
-      -ms-transform: translateY(85px);
-          transform: translateY(85px);
-}
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 80px 0;
-  height: 100%;
-  text-align: center;
-}
-.container h1 {
-  font-size: 40px;
-  -webkit-transition-duration: 1s;
-          transition-duration: 1s;
-  -webkit-transition-timing-function: ease-in-put;
-          transition-timing-function: ease-in-put;
-  font-weight: 200;
-}
-form {
-  padding: 20px 0;
-  position: relative;
-  z-index: 2;
-}
-form input {
-  appearance: none;
-  outline: 0;
-  border: 1px solid rgba(255, 255, 255, 1);
-  background-color: rgba(124, 255, 125, 0.5);
-  width: 250px;
-  border-radius: 3px;
-  padding: 10px 15px;
-  margin: 0 auto 10px auto;
-  display: block;
-  text-align: center;
-  font-size: 18px;
-  -webkit-transition-duration: 0.25s;
-          transition-duration: 0.25s;
-  font-weight: 300;
-}
-form input:hover {
-  background-color: #99ff99;
-}
-form input:focus {
-  background-color: #99ff99;
-  width: 300px;
-}
-form button {
-  appearance: none;
-  outline: 0;
-  background-color: white;
-  border: 0;
-  padding: 10px 15px;
-  color: #53e3a6;
-  border-radius: 3px;
-  width: 250px;
-  cursor: pointer;
-  font-size: 18px;
-  -webkit-transition-duration: 0.25s;
-          transition-duration: 0.25s;
-}
-label{
-display: block;
-padding-left: 15px;
-text-indent: -15px;
-width:150px;
-}
-#login-button{
-background-color: #99ff99;
-color: #fff;
-border: 1px solid #99ff99;
-}
-#login-button:hover{
-background-color: inherit;
-color:#99ff99;
-}
-
-    </style>
+    .checkb {
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    margin:0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+    *overflow: hidden;
+    }
+    @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-weight: 300;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+      border: 1px solid #99FF99;
+    transition : 0.5s;
+    -webkit-box-shadow:none;
+    }
+    body ::-webkit-input-placeholder {
+      /* WebKit browsers */
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      font-weight: 300;
+    }
+    body :-moz-placeholder {
+      /* Mozilla Firefox 4 to 18 */
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      opacity: 1;
+      font-weight: 300;
+    }
+    body ::-moz-placeholder {
+      /* Mozilla Firefox 19+ */
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      opacity: 1;
+      font-weight: 300;
+    }
+    body :-ms-input-placeholder {
+      /* Internet Explorer 10+ */
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      font-weight: 300;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 80px 0;
+      height: 100%;
+      text-align: center;
+    }
+    .container h1 {
+      font-size: 40px;
+      -webkit-transition-duration: 1s;
+              transition-duration: 1s;
+      -webkit-transition-timing-function: ease-in-put;
+              transition-timing-function: ease-in-put;
+      font-weight: 200;
+    }
+    form {
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+    form input {
+      appearance: none;
+      outline: 0;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      background-color: rgba(255, 255, 255, 0.5);
+      width: 250px;
+      border-radius: 3px;
+      padding: 10px 15px;
+      margin: 0 auto 10px auto;
+      display: block;
+      text-align: center;
+      font-size: 18px;
+      color: white;
+      -webkit-transition-duration: 0.25s;
+              transition-duration: 0.25s;
+      font-weight: 300;
+    }
+    form input:hover {
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+    form input:focus {
+      background-color: white;
+      width: 300px;
+      color: #53e3a6;
+    }
+    form button {
+      appearance: none;
+      outline: 0;
+      background-color: rgba(255,255,255,0.9);
+      border: 0;
+      padding: 10px 15px;
+      color: #53e3a6;
+      border-radius: 3px;
+      width: 250px;
+      cursor: pointer;
+      font-size: 18px;
+      -webkit-transition-duration: 0.25s;
+              transition-duration: 0.25s;
+    }
+    form button:hover {
+      background-color: #f5f7f9;
+    }
+    label{
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+    width:150px;
+    }
+    #error_explanation h2{
+    color:red;
+    font-size:20px;
+    }
+    #error_explanation ul li{
+    color: red;
+    list-style-type: none;
+    }
+    #login-button{
+    background-color: rgba(255,255,255,1);
+    color: rgba(130,200,130,1);
+    }
+    #login-button:hover{
+    background-color: rgba(180,240,180,0.5);
+    color: white;
+    }
+    body{
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white;
+      font-weight: 300;
+      background-color: #e4e4e4;
+      background-image: url(<%= asset_path 'backmain.jpg' %>);
+      background-position: center;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      background-size: cover;
+      -o-background-size: cover;
+      background-repeat: no-repeat;
+      overflow-y: hidden;
+    }    </style>
   <body>
     <div class="wrapper">
 	<div class="container">
-		<h1 style="color:#99ff99;" class="animated fadeInDown">Login</h1>
+		<h1 style="color:white;" class="animated fadeInDown">Login</h1>
 <center>
         <%= form_for(resource, as: resource_name, class: "form", url: session_path(resource_name)) do |f| %>
             <div class="field animated fadeInDown">

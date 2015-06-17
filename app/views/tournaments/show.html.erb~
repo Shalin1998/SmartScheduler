@@ -1,3 +1,352 @@
-<h1>
+<script>
+$(document).ready(function(){
+  $('#new_game').on('ajax:success',function(e, data, status, xhr){
+    location.reload();
+  }).on('ajax:error',function(e, xhr, status, error){
+    console.log("Error");
+  });
+
+});
+</script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<style>
+.divider{
+  -webkit-font-smoothing: antialiased;
+box-sizing: border-box;
+color: rgb(0, 155, 82);
+cursor: pointer;
+display: inline;
+font-family: 'Open Sans', sans-serif;
+font-size: 24px;
+font-style: normal;
+font-weight: bold;
+height: auto;
+line-height: 48px;
+list-style-image: none;
+list-style-position: outside;
+list-style-type: none;
+text-align: center;
+text-transform: uppercase;
+width: auto;
+}
+.game-time{
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  color: rgb(85, 85, 85);
+  cursor: auto;
+  display: block;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: normal;
+  height: 20px;
+  line-height: 20px;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  text-align: center;
+  width: 100%;
+
+}
+.field-name{
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  color: rgb(119, 119, 119);
+  cursor: auto;
+  display: block;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: normal;
+  height: 20px;
+  line-height: 20px;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  text-align: center;
+  width: 100%;
+}
+.team_left{
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  color: rgb(0, 79, 42);
+  cursor: auto;
+  display: block;
+  float: right;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: normal;
+  height: 48px;
+  line-height: 48px;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  padding-right: 13.015625px;
+  text-align: right;
+  text-transform: uppercase;
+  width: 208.3125px;
+  margin-right: 8%;
+}
+.team_right{
+  margin-left: 8%;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  color: rgb(0, 79, 42);
+  cursor: auto;
+  display: block;
+  float: left;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: normal;
+  height: 48px;
+  line-height: 48px;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  padding-left: 13.015625px;
+  text-align: left;
+  text-transform: uppercase;
+  width: 208.3125px;
+  word-break: break-word;
+  }
+
+.date2{
+  -webkit-font-smoothing: antialiased;
+box-sizing: border-box;
+color: rgb(255,255,255);
+cursor: auto;
+display: inline;
+font-family: 'Open Sans', sans-serif;
+font-size: 17px;
+font-style: normal;
+font-weight: normal;
+height: auto;
+line-height: 39px;
+text-align: center;
+width: auto;
+
+}
+.date1{
+  -webkit-font-smoothing: antialiased;
+box-sizing: border-box;
+color: rgb(185, 185, 185);
+cursor: auto;
+display: inline;
+font-family: 'Open Sans', sans-serif;
+font-size: 22px;
+font-style: normal;
+font-weight: normal;
+height: auto;
+line-height: 39px;
+padding-left: 80px;
+padding-right: 10px;
+text-align: center;
+text-transform: uppercase;
+}
+a{
+  transition:0.5s;
+  text-decoration: none;
+  color:inherit;
+}
+a:hover{
+  text-decoration: none;
+  color:inherit;
+}
+.hvr-sweep-to-right:hover{
+  color: white;
+}
+hr{
+  max-width: 100%;
+  height: 12px;
+  border: 0;
+  box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+}
+.team_display:hover{
+  background-color: rgba(230,230,230,0.9);
+}
+body{
+  font-size: 15px;
+  background-image: url(<%= asset_path 'backthree.jpg' %>);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.panel-default>.panel-heading{
+  background-color: #77dd77;
+}
+</style>
+	<div class="modal fade" id="roundrobin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&nbsp;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Generate Games</h4>
+				</div>
+				<div class="modal-body">
+          <%= form_tag '/tournaments/schedule',id: 'schedule-form', :method => "post" do |f| %>
+            <b>Select your Venues:</b>
+            <br>
+            <% current_user.fields.each do |x| %>
+            <%= check_box_tag 'fields_selected[]', x.id %>
+            <%= label_tag x.name %> - <%= x.timeslots.count %> Total Timeslots
+            <br>
+            <% end %>
+            <hr style="height:1px;box-shadow:none;color:#000;">
+            <b>Select your teams:</b>
+            <br>
+            <% current_user.teams.each do |x| %>
+              <%= check_box_tag 'teams_selected[]', x.id %>
+              <%= label_tag x.name %>
+              <br>
+            <% end %>
+            <input type="hidden" name="tournamentid" id="tournamentid" value="<%= @tournament.id %>">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" onclick="getElementById('schedule-form').submit()" class="btn btn-default">Generate</button>
+          <% end %>
+					</div>
+			</div>
+		</div>
+</div>
+
+<div class="modal fade" id="send_schedule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&nbsp;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Send Schedule</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag '/tournaments/send_schedule',id: 'send-schedule-form', :method => "post" do |f| %>
+          <b>Select your teams:</b>
+          <br>
+          <% current_user.teams.each do |x| %>
+            <%= check_box_tag 'teams_selected_mail[]', x.id %>
+            <%= label_tag x.name %>
+            <br>
+          <% end %>
+          <input type="hidden" name="tournamentid" id="tournamentid" value="<%= @tournament.id %>">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" onclick="getElementById('send-schedule-form').submit()" class="btn btn-default">Send</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="add_team" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&nbsp;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add Team</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag '/tournaments/add_team',id: 'add-team-form', :method => "post" do |f| %>
+          <b>Select your teams:</b>
+          <br>
+          <% current_user.teams.each do |x| %>
+            <%= check_box_tag 'teams_selected_add[]', x.id %>
+            <%= label_tag x.name %>
+            <br>
+          <% end %>
+          <input type="hidden" name="tournamentid" id="tournamentid" value="<%= @tournament.id %>">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" onclick="getElementById('add-team-form').submit()" class="btn btn-default">Add</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="remove_team" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&nbsp;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Remove Team</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag '/tournaments/remove_team',id: 'remove-team-form', :method => "post" do |f| %>
+          <b>Select your teams:</b>
+          <br>
+          <% @remove_team.each do |x| %>
+            <%= check_box_tag 'teams_selected_remove[]', x %>
+            <%= label_tag Team.find(x).name %>
+            <br>
+          <% end %>
+          <input type="hidden" name="tournamentid" id="tournamentid" value="<%= @tournament.id %>">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" onclick="getElementById('remove-team-form').submit()" class="btn btn-default">Remove</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h1 style="text-align:center;color:#002400;" class="animate fadeInDown">
 	<strong><%= @tournament.name %></strong>
 </h1>
+<center>
+
+<% if @tournament.games.count == 0 %>
+<button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#roundrobin">Generate Games</button>
+<% else %>
+<button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#send_schedule">Mail Schedule</button>
+<button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#add_team">Add Team</button>
+<button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#remove_team">Remove Team</button>
+<% end %>
+<br>
+
+<%-# <%= link_to "Add Game", new_tournament_game_path(params[:id]) -%>
+</center>
+<center>
+    <% @tournament.games.order(date_time: :asc).each do |f| %>
+<div style="text-align:center;margin-top:30px;width:750px;" class="animated fadeInDown">
+    <% sameday = false %>
+    <% for i in 0..@same_day.count-1 %>
+      <% if f.id == @same_day[i] %>
+       <% sameday = false %>
+       <% end %>
+    <% end %>
+    <% if sameday == false %>
+<div class="panel panel-default">
+  <div class="panel-heading"><span class="date1"><%= f.date_time.strftime("%A") %></span>&nbsp;&nbsp;<span class="date2"><%= f.date_time.strftime("%d %B %Y") %></span></div>
+  <div class="panel-body" style="text-align:center;">
+    <span class="game-time"><%= f.date_time.strftime("%I:%M %p") %></span>
+    <span class="field-name"><%= Field.find(f.field).name %> - <%= Field.find(f.field).location %></span>
+    <span class="team_left">
+      <a href="/teams/<%= f.team_one %>">
+    <%= Team.find(f.team_one).name %>
+  </a></span>
+  <span class="divider">
+    <% if DateTime.now < f.date_time %>
+    v
+    <% else %>
+    <%= f.team_one_score %> - <%= f.team_two_score %>
+    <% end %>
+</span>
+    <span class="team_right">
+      <a href="/teams/<%= f.team_two %>">
+    <%= Team.find(f.team_two).name %>
+  </a></span>
+  </div>
+</div>
+    <% else %>
+      <% if(Game.find(f.id).date_time.yday != f.date_time.yday) %>
+        <div class="team_display panel panel-default">
+        <div class="panel-body" style="width:800px;">
+      <% end %>
+    <% end %>
+  <% end %>
+    </div>
+</center>

@@ -85,11 +85,9 @@ width: auto;
   padding-right: 13.015625px;
   text-align: right;
   text-transform: uppercase;
-  width: 208.3125px;
-  margin-right: 8%;
+  width: 300px;
 }
 .team_right{
-  margin-left: 8%;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   color: rgb(0, 79, 42);
@@ -108,14 +106,14 @@ width: auto;
   padding-left: 13.015625px;
   text-align: left;
   text-transform: uppercase;
-  width: 208.3125px;
+  width: 300px;
   word-break: break-word;
   }
 
 .date2{
   -webkit-font-smoothing: antialiased;
 box-sizing: border-box;
-color: rgb(85, 85, 85);
+color: rgb(255,255,255);
 cursor: auto;
 display: inline;
 font-family: 'Open Sans', sans-serif;
@@ -131,10 +129,10 @@ width: auto;
 .date1{
   -webkit-font-smoothing: antialiased;
 box-sizing: border-box;
-color: rgb(85, 85, 85);
+color: rgb(255, 255, 255);
 cursor: auto;
 display: inline;
-font-family: 'Open Sans', sans-serif;
+font-family: 'Open Sans', sans-@serif;
 font-size: 22px;
 font-style: normal;
 font-weight: normal;
@@ -157,12 +155,17 @@ a:hover{
 .hvr-sweep-to-right:hover{
   color: white;
 }
-hr{
-  max-width: 100%;
-  height: 12px;
+hr {
+  display: block;
+  height: 1px;
   border: 0;
-  box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+  border-top:
+  1px solid #ddd;
+  margin: 0px;
+  padding: 0;
+  max-width: 100%;
 }
+
 .team_display:hover{
   background-color: rgba(230,230,230,0.9);
 }
@@ -250,8 +253,16 @@ body{
         <%= form_tag '/tournaments/add_team',id: 'add-team-form', :method => "post" do |f| %>
           <b>Select your teams:</b>
           <br>
-          <% current_user.teams.each do |x| %>
-            <%= check_box_tag 'teams_selected_add[]', x.id %>
+          <% @add_team.each do |x| %>
+            <%= check_box_tag 'teams_selected_add[]', x %>
+            <%= label_tag Team.find(x).name %>
+            <br>
+          <% end %>
+          <br>
+          <b>Select your Venues:</b>
+          <br>
+          <% current_user.fields.each do |x| %>
+            <%= check_box_tag 'fields_selected[]', x.id %>
             <%= label_tag x.name %>
             <br>
           <% end %>
@@ -310,43 +321,64 @@ body{
 <%-# <%= link_to "Add Game", new_tournament_game_path(params[:id]) -%>
 </center>
 <center>
-    <% @tournament.games.order(date_time: :asc).each do |f| %>
-<div style="text-align:center;margin-top:30px;width:750px;" class="animated fadeInDown">
-    <% sameday = false %>
-    <% for i in 0..@same_day.count-1 %>
-      <% if f.id == @same_day[i] %>
-       <% sameday = false %>
-       <% end %>
-    <% end %>
-    <% if sameday == false %>
-<div class="panel panel-default">
-  <div class="panel-heading"><span class="date1"><%= f.date_time.strftime("%A") %></span>&nbsp;&nbsp;<span class="date2"><%= f.date_time.strftime("%d %B %Y") %></span></div>
-  <div class="panel-body" style="text-align:center;">
-    <span class="game-time"><%= f.date_time.strftime("%I:%M %p") %></span>
-    <span class="field-name"><%= Field.find(f.field).name %> - <%= Field.find(f.field).location %></span>
-    <span class="team_left">
-      <a href="/teams/<%= f.team_one %>">
-    <%= Team.find(f.team_one).name %>
-  </a></span>
-  <span class="divider">
-    <% if DateTime.now < f.date_time %>
-    v
-    <% else %>
-    <%= f.team_one_score %> - <%= f.team_two_score %>
-    <% end %>
-</span>
-    <span class="team_right">
-      <a href="/teams/<%= f.team_two %>">
-    <%= Team.find(f.team_two).name %>
-  </a></span>
-  </div>
-</div>
-    <% else %>
-      <% if(Game.find(f.id).date_time.yday != f.date_time.yday) %>
-        <div class="team_display panel panel-default">
-        <div class="panel-body" style="width:800px;">
+  <% if !(@tournament.games.count == 0) %>
+  <div style="text-align:center;margin-top:30px;width:750px;" class="animated fadeInDown">
+    <% for i in 0..@game_list.count-1 %>
+    <div class="panel panel-default">
+      <div class="panel-heading"><span class="date1"><%= @game_list[i][0].date_time.strftime("%A") %></span>&nbsp;&nbsp;<span class="date2"><%= @game_list[i][0].date_time.strftime("%d %B %Y") %></span></div>
+    <% if @game_list[i].count > 1 %>
+      <% for n in 0..@game_list[i].count-1 %>
+      <div class="panel-body" style="text-align:center;">
+        <span class="game-time"><%= @game_list[i][n].date_time.strftime("%I:%M %p") %></span>
+        <span class="field-name"><%= Field.find(@game_list[i][n].field).name %> - <%= Field.find(@game_list[i][n].field).location %></span>
+        <span class="team_left">
+          <a href="/teams/<%= @game_list[i][n].team_one %>">
+            <%= Team.find(@game_list[i][n].team_one).name %>
+          </a></span>
+          <span class="divider">
+            <a href="/tournaments/<%= @tournament.id %>/games/<%= @game_list[i][n].id %>">
+              <% if DateTime.now < @game_list[i][n].date_time %>
+              v
+              <% else %>
+              <%= @game_list[i][n].team_one_score %> - <%= @game_list[i][n].team_two_score %>
+              <% end %>
+            </a>
+          </span>
+          <span class="team_right">
+            <a href="/teams/<%= @game_list[i][n].team_two %>">
+              <%= Team.find(@game_list[i][n].team_two).name %>
+          </a></span>
+      </div>
+      <% if n < 1 %>
+      <hr>
       <% end %>
+      <% end %>
+    <% else %>
+      <div class="panel-body" style="text-align:center;">
+        <span class="game-time"><%= @game_list[i][0].date_time.strftime("%I:%M %p") %></span>
+        <span class="field-name"><%= Field.find(@game_list[i][0].field).name %> - <%= Field.find(@game_list[i][0].field).location %></span>
+        <span class="team_left">
+          <a href="/teams/<%= @game_list[i][0].team_one %>">
+            <%= Team.find(@game_list[i][0].team_one).name %>
+          </a></span>
+          <span class="divider">
+            <a href="/tournaments/<%= @tournament.id %>/games/<%= @game_list[i][0].id %>">
+              <% if DateTime.now < @game_list[i][0].date_time %>
+              v
+              <% else %>
+              <%= @game_list[i][0].team_one_score %> - <%= @game_list[i][0].team_two_score %>
+              <% end %>
+            </a>
+          </span>
+          <span class="team_right">
+            <a href="/teams/<%= @game_list[i][0].team_two %>">
+              <%= Team.find(@game_list[i][0].team_two).name %>
+          </a></span>
+      </div>
     <% end %>
-  <% end %>
+
     </div>
+    <% end %>
+  </div>
+  <% end %>
 </center>

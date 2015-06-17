@@ -1,26 +1,15 @@
-<center>
-<h1>
+
+<style>
+  .left_team{
+    float: left;
+  }
+  .right_team{
+    float: right;
+  }
+</style>
+<div class="left_team">
 <%= Team.find(@game.team_one).name %>
-&nbsp;
-vs.
-&nbsp;
+</div>
+<div class="right_team">
 <%= Team.find(@game.team_two).name %>
-</h1>
-<p>
-  Date:&nbsp;
-  <%= @game.match_date.strftime("%A, %B %d, %Y") %>
-</p>
-<p>
-  Time ->
-  <%= @game.match_hour %>:<%= @game.match_minute %>
-  <% if @game.match_pm %>
-    PM
-  <% else %>
-    AM
-  <% end %>
-</p>
-<p>
-  Location:&nbsp;
-  <%= @game.location %>
-</p>
-</center>
+</div>

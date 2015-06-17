@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 	post '/tournaments/schedule' => 'tournaments#schedule'
 	post '/tournaments/send_schedule' => 'tournaments#send_schedule'
 	post '/tournaments/remove_team' => 'tournaments#remove_team'
+	post '/tournaments/add_team' => 'tournaments#add_team'
 
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
