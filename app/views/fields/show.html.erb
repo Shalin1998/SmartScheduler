@@ -28,7 +28,7 @@ hr{
 <hr>
 <% timeslot_info = @field.timeslots.sort_by{:start} %>
   <% timeslot_info.each do |f| %>
-  <% if DateTime.now > f.start %>
+  <% if DateTime.now > f.start && DateTime.now < f.start.advance(:hours => 12) %>
   <% f.destroy %>
   <% end %>
 <div>

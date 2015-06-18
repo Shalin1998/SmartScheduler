@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 	end
 
 	def import
-		file = params[:import_file]
+		file = params[:file]
 		ss = Roo::Spreadsheet.open(file.path)
 		sheet = ss.sheets
 		ss.sheet(sheet.index('Teams')).column(1)[1..-1].each do |t_name|

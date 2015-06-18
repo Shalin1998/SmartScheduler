@@ -18,7 +18,6 @@ $(document).ready(function(){
 
 });
 </script>
-
 <style>
 /* Let's get this party started */
 ::-webkit-scrollbar {
@@ -54,6 +53,8 @@ a:hover{
 body{
     background-image: url(<%= asset_path 'backthree.jpg' %>);
     background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   overflow-x:hidden;
   font-size: 15px;
 }
@@ -190,7 +191,6 @@ input[type="text"]:focus {
 }
 </style>
 <body>
-
   <div class="addNew" style="width:100%;height:700px;">
     <div class="modal fade" id="team" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -202,7 +202,6 @@ input[type="text"]:focus {
           <div class="modal-body">
             <% new_team = Team.new %>
             <%= form_for new_team, remote: true do |f| %>
-
             <p style="text-align:center;">
               <%= f.label :name %><br />
               <%= f.text_field :name,style: "padding: 10px 15px;text-align:center;" %>
@@ -281,15 +280,17 @@ input[type="text"]:focus {
             <h4 class="modal-title" id="myModalLabel">Import</h4>
           </div>
           <div class="modal-body">
-            <%= form_tag(:import ,method: :POST, id: "importf", multipart: true) do %>
-              <%= file_field_tag(:import_file) %>
+            <center>
+            <%= form_tag(:import ,method: :POST, id: "file_import", multipart: true) do %>
+            <input type="file" name="file" />
             <% end %>
+          </center>
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-default" onclick="importButton()">Submit</button>
             <script>
             function importButton(){
-              $("#importf").submit();
+              $("#file_import").submit();
               console.log("Imported");
             }
             </script>

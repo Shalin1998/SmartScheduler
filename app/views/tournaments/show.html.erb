@@ -254,7 +254,7 @@ body{
           <b>Select your teams:</b>
           <br>
           <% @add_team.each do |x| %>
-            <%= check_box_tag 'teams_selected_add[]', x %>
+            <%= radio_button_tag 'teams_selected_add[]', x %>
             <%= label_tag Team.find(x).name %>
             <br>
           <% end %>

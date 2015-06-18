@@ -95,9 +95,6 @@ class TournamentsController < ApplicationController
 			end
 		end
 		@game_count = @current_teams.count * @team_count
-		for i in 1..(@team_count-1)
-			@game_count += i
-		end
 		if @game_count > @timeslot_count
 			@error = true
 			@errors_message = "Not enough timeslots!"
@@ -124,8 +121,75 @@ class TournamentsController < ApplicationController
 				end
 			end
 			@create_game = Array.new(@game_count){Array.new(4)}
+			x = 0
+			for i in 0..@game_count-1
+				@create_game[i][0] = team_arr[0]
+				@create_game[i][1] = @current_teams[x]
+				x += 1
+			end
+			#MORE THAN ONE GAME PER WEEK
+			@create_game[0][2] = @timeslots_arr[0]
+			@create_game[0][3] = @field_timeslots_arr[0]
+			@timeslots_arr.delete_at(0)
 
+			@not_possible = 0
+			@error_message_times = false
+			for i in 1..@game_count-1
+				for x in 1..@timeslots_arr.count-1
+					@checking = false
+					for y in 0..@game_count-1
+						if @create_game[i][0] == @create_game[y][0] || @create_game[i][0] == @create_game[y][1] || @create_game[i][1] == @create_game[y][0] || @create_game[i][1] == @create_game[y][1]
+							if !@create_game[y][2].nil?
+								if (Timeslot.find(@timeslots_arr[x]).start.to_datetime.cweek == Timeslot.find(@create_game[y][2]).start.to_datetime.cweek) && (Timeslot.find(@timeslots_arr[x]).start.to_datetime.year == Timeslot.find(@create_game[y][2]).start.to_datetime.year)
+									@checking = true
+								end
+							end
+						end
+					end
+
+					if @checking == true
+						@not_possible += 1
+					else
+						@next = false
+						for f in 0..@game_count-1
+							if !(@create_game[f][2].nil?)
+								if @create_game[f][2] == @timeslots_arr[x]
+									@next = true
+									break
+								end
+							end
+						end
+						if @next == false
+							@create_game[i][2] = @timeslots_arr[x]
+							@create_game[i][3] = @field_timeslots_arr[x]
+						end
+					end
+				end
+			end
+			@nil_time = false
+			for i in 0..(@game_count-1)
+				if @create_game[i][2].nil?
+					@nil_time = true
+				end
+			end
+
+			if @nil_time == false
+				for i in 0..(@game_count-1)
+					Game.create(:user => current_user,
+					:tournament => Tournament.find(tournament_num),
+					:team_one => @create_game[i][0] , :team_two => @create_game[i][1],
+					:date_time => Timeslot.find(@create_game[i][2]).start, :field_id => @create_game[i][3],
+					:timeslot => @create_game[i][2])
+					Timeslot.find(@create_game[i][2]).update_attribute(:available, false)
+				end
+				Tournament.find(tournament_num).update_attribute(:generated, true)
+				redirect_to tournament_path(tournament_num)
+			else
+				# add error here
+				@errors_message = "The selected timeslots are too close to one another!  Each team playing only once a week is not possible with this configuration!"
+			end
 		end
+
 	end
 
 	def remove_team
