@@ -4,6 +4,7 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+
 html,
 body {
     width: 100%;
@@ -27,7 +28,6 @@ hr.light {
 a {
     color: #009900;
     -webkit-transition: all .35s;
-    -moz-transition: all .35s;
     transition: all .35s;
 }
 
@@ -81,7 +81,6 @@ aside {
     font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
     background-color: #fff;
     -webkit-transition: all .35s;
-    -moz-transition: all .35s;
     transition: all .35s;
 }
 
@@ -177,10 +176,8 @@ header {
     min-height: auto;
     text-align: center;
     color: #99ff99;
-    background-image: url("<%= asset_path 'welcome.jpg' %>");
+    background-image: url(<%= asset_path 'welcome.jpg' %>);
     background-position: center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
 }
@@ -275,7 +272,6 @@ header .header-content .header-content-inner p {
     opacity: 0;
     background: rgba(240,95,64,.9);
     -webkit-transition: all .35s;
-    -moz-transition: all .35s;
     transition: all .35s;
 }
 
@@ -284,7 +280,9 @@ header .header-content .header-content-inner p {
     top: 50%;
     width: 100%;
     text-align: center;
-    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
 }
 
 .portfolio-box .portfolio-box-caption .portfolio-box-caption-content .project-category,
@@ -335,7 +333,6 @@ header .header-content .header-content-inner p {
     color: #222;
     background-color: #fff;
     -webkit-transition: all .35s;
-    -moz-transition: all .35s;
     transition: all .35s;
 }
 
@@ -388,7 +385,6 @@ fieldset[disabled] .btn-default.active {
     color: #fff;
     background-color: #009900;
     -webkit-transition: all .35s;
-    -moz-transition: all .35s;
     transition: all .35s;
 }
 
@@ -458,6 +454,11 @@ fieldset[disabled] .btn-primary.active {
     text-shadow: none;
     color: black;
     background: #222;
+}
+
+img::-moz-selection {
+    color: #fff;
+    background: 0 0;
 }
 
 img::selection {
