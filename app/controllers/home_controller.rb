@@ -21,9 +21,11 @@ class HomeController < ApplicationController
 			f = Field.create(:name => field_name, :location => field_location, :user => current_user)
 			if f.save
 				for n in 2..(row_count -1)
-					timeslot_start = row[n]
-					start = Time.zone.parse(timeslot_start)
-					Timeslot.create(:start => start, :field_id => f.id, :user => current_user)
+					if !row[n].nil?
+						timeslot_start = row[n]
+						start = Time.zone.parse(timeslot_start)
+						Timeslot.create(:start => start, :field_id => f.id, :user => current_user)
+					end
 				end
 			end
 		end

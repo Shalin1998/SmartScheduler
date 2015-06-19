@@ -1,6 +1,16 @@
 class TournamentsController < ApplicationController
 	before_action :authenticate_user!
 
+	def calendar
+		if !params[:id].nil?
+			@tournament = Tournament.find(params[:id])
+			cookies[:tournamentid] = @tournament.id
+		else
+			@tournament = Tournament.find(cookies[:tournamentid])
+		end
+		@games = @tournament.games.all
+	end
+
 	def show
 		@tournament = Tournament.find(params[:id])
 		@game = Game.create
@@ -140,7 +150,7 @@ class TournamentsController < ApplicationController
 					for y in 0..@game_count-1
 						if @create_game[i][0] == @create_game[y][0] || @create_game[i][0] == @create_game[y][1] || @create_game[i][1] == @create_game[y][0] || @create_game[i][1] == @create_game[y][1]
 							if !@create_game[y][2].nil?
-								if (Timeslot.find(@timeslots_arr[x]).start.to_datetime.cweek == Timeslot.find(@create_game[y][2]).start.to_datetime.cweek) && (Timeslot.find(@timeslots_arr[x]).start.to_datetime.year == Timeslot.find(@create_game[y][2]).start.to_datetime.year)
+								if (Timeslot.find(@timeslots_arr[x]).start.to_datetime.yday <= Timeslot.find(@create_game[y][2]).start.to_datetime.yday + 7 && Timeslot.find(@timeslots_arr[x]).start.to_datetime.yday >= Timeslot.find(@create_game[y][2]).start.to_datetime.yday - 7) && (Timeslot.find(@timeslots_arr[x]).start.to_datetime.year == Timeslot.find(@create_game[y][2]).start.to_datetime.year)
 									@checking = true
 								end
 							end
@@ -283,7 +293,7 @@ class TournamentsController < ApplicationController
 					for y in 0..@game_count-1
 						if @create_game[i][0] == @create_game[y][0] || @create_game[i][0] == @create_game[y][1] || @create_game[i][1] == @create_game[y][0] || @create_game[i][1] == @create_game[y][1]
 							if !@create_game[y][2].nil?
-								if (Timeslot.find(@timeslots_arr[x]).start.to_datetime.cweek == Timeslot.find(@create_game[y][2]).start.to_datetime.cweek) && (Timeslot.find(@timeslots_arr[x]).start.to_datetime.year == Timeslot.find(@create_game[y][2]).start.to_datetime.year)
+								if (Timeslot.find(@timeslots_arr[x]).start.to_datetime.yday <= Timeslot.find(@create_game[y][2]).start.to_datetime.yday + 7 && Timeslot.find(@timeslots_arr[x]).start.to_datetime.yday >= Timeslot.find(@create_game[y][2]).start.to_datetime.yday - 7) && (Timeslot.find(@timeslots_arr[x]).start.to_datetime.year == Timeslot.find(@create_game[y][2]).start.to_datetime.year)
 									@checking = true
 								end
 							end

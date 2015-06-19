@@ -1,5 +1,7 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!
+  extend SimpleCalendar
+  has_calendar :attribute => :date_time
   def new
     @game = Game.new
     if user_signed_in?

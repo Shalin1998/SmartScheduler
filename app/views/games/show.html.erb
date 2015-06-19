@@ -1,15 +1,97 @@
 
 <style>
-  .left_team{
-    float: left;
+  .game-box{
+    width: 500px;
+  }
+  .panel-body{
+    width:70%;
+  }
+  .divider{
+    -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  color: rgb(0, 155, 82);
+  cursor: pointer;
+  display: inline;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: bold;
+  height: auto;
+  line-height: 48px;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  text-align: center;
+  text-transform: uppercase;
+  width: auto;
   }
   .right_team{
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    color: rgb(0, 79, 42);
+    cursor: auto;
+    display: block;
     float: right;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: normal;
+    height: 48px;
+    line-height: 48px;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    padding-right: 13.015625px;
+    text-align: right;
+    text-transform: uppercase;
+    width: 300px;
   }
+  .left_team{
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    color: rgb(0, 79, 42);
+    cursor: auto;
+    display: block;
+    float: left;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: normal;
+    height: 48px;
+    line-height: 48px;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    padding-left: 13.015625px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 300px;
+    word-break: break-word;
+    }
+
 </style>
-<div class="left_team">
+<center>
+<div class="panel-body">
+<span class="left_team">
 <%= Team.find(@game.team_one).name %>
-</div>
-<div class="right_team">
+</span>
+<span class="divider">
+  V
+</span>
+<span class="right_team">
 <%= Team.find(@game.team_two).name %>
+</span>
 </div>
+
+<div class="panel-body">
+<span class="left_team">
+
+</span>
+<span class="divider">
+</span>
+<span class="right_team">
+
+</span>
+</div>
+
+</center>

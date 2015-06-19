@@ -312,6 +312,7 @@ body{
 <% if @tournament.games.count == 0 %>
 <button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#roundrobin">Generate Games</button>
 <% else %>
+<a class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" href="/calendar?id=<%= @tournament.id %>">Calendar</a>
 <button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#send_schedule">Mail Schedule</button>
 <button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#add_team">Add Team</button>
 <button class="btn btn-default hvr-sweep-to-right animated fadeInDown" type="button" data-toggle="modal" data-target="#remove_team">Remove Team</button>
@@ -322,7 +323,7 @@ body{
 </center>
 <center>
   <% if !(@tournament.games.count == 0) %>
-  <div style="text-align:center;margin-top:30px;width:750px;" class="animated fadeInDown">
+  <div style="text-align:center;margin-top:30px;width:750px;" class="animated fadeInUp">
     <% for i in 0..@game_list.count-1 %>
     <div class="panel panel-default">
       <div class="panel-heading"><span class="date1"><%= @game_list[i][0].date_time.strftime("%A") %></span>&nbsp;&nbsp;<span class="date2"><%= @game_list[i][0].date_time.strftime("%d %B %Y") %></span></div>
@@ -362,13 +363,17 @@ body{
             <%= Team.find(@game_list[i][0].team_one).name %>
           </a></span>
           <span class="divider">
+            <% if false %>
             <a href="/tournaments/<%= @tournament.id %>/games/<%= @game_list[i][0].id %>">
+            <% end %>
               <% if DateTime.now < @game_list[i][0].date_time %>
               v
               <% else %>
               <%= @game_list[i][0].team_one_score %> - <%= @game_list[i][0].team_two_score %>
               <% end %>
+              <% if false %>
             </a>
+            <% end %>
           </span>
           <span class="team_right">
             <a href="/teams/<%= @game_list[i][0].team_two %>">
